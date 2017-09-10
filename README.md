@@ -9,7 +9,7 @@ Libraries: Dlib
 # Installing Dlib
 
 
-## For Ubuntu
+### For Ubuntu
 
 1. Install required packages
 
@@ -30,12 +30,12 @@ pip install dlib
 See http://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/ for more details.
 
 
-## For Raspberry Pi
+### For Raspberry Pi
 
 See http://www.pyimagesearch.com/2017/05/01/install-dlib-raspberry-pi/.
 
 
-## Official guideline 
+### Official guideline 
 http://dlib.net/compile.html
 
 
