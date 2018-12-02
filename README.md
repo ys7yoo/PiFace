@@ -4,7 +4,7 @@ Language: Python 3
 
 Targe platform: Raspberry Pi, Ubuntu, OSX
 
-Libraries: Dlib
+Libraries: Dlib, skimage
 
 # Installing Dlib
 
@@ -22,10 +22,11 @@ sudo apt-get install libboost-all-dev
 2. Set up your virtual environment
 
 
-3. Install dlib with Python bindings
+3. Install dlib with Python bindings and skimage
 
 ```bash
 pip install dlib
+pip install scikit-image
 ```
 See http://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/ for more details.
 
