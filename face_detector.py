@@ -51,7 +51,12 @@ from skimage import io
 
 
 detector = dlib.get_frontal_face_detector()
-win = dlib.image_window()
+
+try:
+    win = dlib.image_window()
+except AttributeError:
+    # method may not exist because it does not support GUI
+    win = None
 
 for f in sys.argv[1:]:
     print("Processing file: {}".format(f))
@@ -65,9 +70,10 @@ for f in sys.argv[1:]:
         print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
             i, d.left(), d.top(), d.right(), d.bottom()))
 
-    win.clear_overlay()
-    win.set_image(img)
-    win.add_overlay(dets)
+    if win:
+        win.clear_overlay()
+        win.set_image(img)
+        win.add_overlay(dets)
     dlib.hit_enter_to_continue()
 
 
