@@ -49,18 +49,42 @@ import sys
 import dlib
 from skimage import io
 
+from matplotlib import pyplot as plt
+import matplotlib.patches as patches
 
-detector = dlib.get_frontal_face_detector()
+import os
 
-try:
-    win = dlib.image_window()
-except AttributeError:
-    # method may not exist because it does not support GUI
-    win = None
 
-for f in sys.argv[1:]:
-    print("Processing file: {}".format(f))
-    img = io.imread(f)
+def plot_rect_on_image(ax, img, rects, scores=None, color="green"):
+    '''
+    plot image and detected faces (rects)
+    ax: axis of a pyplot (ax = fig.add_subplot(111, aspect='equal')
+    '''
+
+    ax.imshow(img)
+
+    for i, d in enumerate(rects):
+        if scores is not None:
+            print("Detection {}, score: {}, face_type:{}".format(d, scores[i], idx[i]))
+
+        # plot rect
+        ax.add_patch(
+            patches.Rectangle(
+                (d.left(), d.top()),   # (x,y)
+                d.width(),          # width
+                d.height(),          # height
+                fill=False,      # remove background
+                edgecolor=color, linewidth=3
+            )
+        )
+
+
+def detect_face_from_image(filename):
+    # global img, dets, i, d, idx
+
+    print("Processing file: {}".format(filename))
+    img = io.imread(filename)
+
     # The 1 in the second argument indicates that we should upsample the image
     # 1 time.  This will make everything bigger and allow us to detect more
     # faces.
@@ -70,23 +94,52 @@ for f in sys.argv[1:]:
         print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
             i, d.left(), d.top(), d.right(), d.bottom()))
 
+    # plot results
+    try:
+        win = dlib.image_window()
+    except AttributeError:
+        # method may not exist because it does not support GUI
+        win = None
     if win:
         win.clear_overlay()
         win.set_image(img)
         win.add_overlay(dets)
-    dlib.hit_enter_to_continue()
+
+    # save results
+    base_filename = os.path.basename(filename)
+    idx = base_filename.find('.')
+    # filename_to_save = base_filename[:idx] + '_face' + base_filename[idx:]
+    filename_to_save = 'face/' + base_filename
+    print("Saving results to: {}\n".format(filename_to_save))
+    # print(img.shape)
+    ppi = 72
+    fig1 = plt.figure(figsize=(img.shape[1] / ppi, img.shape[0] / ppi))
+    ax1 = fig1.add_subplot(111, aspect='equal')
+    plot_rect_on_image(ax1, img, dets)
+    plt.axis('off')
+    fig1.savefig(filename_to_save, dpi=90, bbox_inches='tight')
+    # dlib.hit_enter_to_continue()
+
+    return dets
 
 
-# Finally, if you really want to you can ask the detector to tell you the score
-# for each detection.  The score is bigger for more confident detections.
-# The third argument to run is an optional adjustment to the detection threshold,
-# where a negative value will return more detections and a positive value fewer.
-# Also, the idx tells you which of the face sub-detectors matched.  This can be
-# used to broadly identify faces in different orientations.
-if (len(sys.argv[1:]) > 0):
-    img = io.imread(sys.argv[1])
-    dets, scores, idx = detector.run(img, 1, -1)
-    for i, d in enumerate(dets):
-        print("Detection {}, score: {}, face_type:{}".format(
-            d, scores[i], idx[i]))
+detector = dlib.get_frontal_face_detector()
+
+for filename in sys.argv[1:]:
+    detect_face_from_image(filename)
+
+
+
+# # Finally, if you really want to you can ask the detector to tell you the score
+# # for each detection.  The score is bigger for more confident detections.
+# # The third argument to run is an optional adjustment to the detection threshold,
+# # where a negative value will return more detections and a positive value fewer.
+# # Also, the idx tells you which of the face sub-detectors matched.  This can be
+# # used to broadly identify faces in different orientations.
+# if (len(sys.argv[1:]) > 0):
+#     img = io.imread(sys.argv[1])
+#     dets, scores, idx = detector.run(img, 1, -1)
+#     for i, d in enumerate(dets):
+#         print("Detection {}, score: {}, face_type:{}".format(
+#             d, scores[i], idx[i]))
 
