@@ -24,11 +24,18 @@ sudo apt-get install libboost-all-dev
 
 3. Install dlib with Python bindings and skimage
 
+Using pip,
 ```bash
 pip install dlib
 pip install scikit-image
 ```
 See http://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/ for more details.
+
+For anaconda,
+```
+conda install -c menpo dlib 
+conda install scikit-image
+```
 
 
 ### For Raspberry Pi
