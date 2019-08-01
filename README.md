@@ -33,8 +33,8 @@ See http://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/ for more detail
 
 For anaconda,
 ```
-conda install -c menpo dlib 
 conda install scikit-image
+conda install -c menpo dlib 
 ```
 
 
