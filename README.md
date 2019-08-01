@@ -32,6 +32,13 @@ pip install scikit-image
 See http://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/ for more details.
 
 For anaconda,
+
+Prepare a vitual environment with Python *3.5*!
+```
+conda create -n image python=3.5
+conda activate image
+```
+
 ```
 conda install scikit-image
 conda install -c menpo dlib 
